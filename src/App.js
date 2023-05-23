@@ -1,40 +1,37 @@
-import logo from "./logo.svg";
-import "./App.css";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Grid } from "gridjs";
-import { Table } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
 
-function App() {
+const App = () => {
+  const gridRef = useRef(null);
+
   useEffect(() => {
-    grid.render(wrapperRef.current);
-  });
-  const wrapperRef = useRef(null);
-  const grid = new Grid({
-    columns: ["Name", "Email", "Phone Number"],
-    search: true,
-    className: "table",
-    style: Table,
+    const grid = new Grid({
+      search: true,
+      columns: ["Name", "Email", "Phone Number"],
+      data: [
+        ["John", "john@example.com", "(353) 01 222 3333"],
+        ["Mark", "mark@gmail.com", "(01) 22 888 4444"],
+        ["Eoin", "eoin@gmail.com", "0097 22 654 00033"],
+        ["Sarah", "sarahcdd@gmail.com", "+322 876 1233"],
+        ["Afshin", "afshin@mail.com", "(353) 22 87 8356"],
+      ],
+    });
 
-    language: {
-      search: {
-        placeholder: "🔍 ketik kata kunci...",
-      },
-    },
-    data: [
-      ["John", "john@example.com", "(353) 01 222 3333"],
-      ["Mark", "mark@gmail.com", "(01) 22 888 4444"],
-      ["John", "john@example.com", "(353) 01 222 3333"],
-      ["Mark", "mark@gmail.com", "(01) 22 888 4444"],
-      ["John", "john@example.com", "(353) 01 222 3333"],
-      ["Mark", "mark@gmail.com", "(01) 22 888 4444"],
-    ],
-  });
-
+    grid.render(gridRef.current);
+    console.log(grid.config.columns);
+    return () => {
+      grid.destroy();
+    };
+  }, []);
   return (
-    <div style={{ textAlign: "center" }}>
-      <div ref={wrapperRef} style={{ width: "40%" }} />
+    <div id="wrapper" className="container">
+      <div className="row">
+        <table className="table-responsive border">
+          <div ref={gridRef} className="bordered"></div>
+        </table>
+      </div>
     </div>
   );
-}
-
+};
 export default App;
