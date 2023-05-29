@@ -1,12 +1,14 @@
-import React, { useEffect, useRef } from "react";
-import { Grid } from "gridjs";
-import "bootstrap/dist/css/bootstrap.css";
+import React, { Component } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+export default class App extends Component {
+  render() {
+    const Colom = class {
+      constructor(options) {
+        this.options = options;
+      }
+    };
 
-const App = () => {
-  const gridRef = useRef(null);
-
-  useEffect(() => {
-    const grid = new Grid({
+    const columnd = new Colom({
       search: true,
       columns: ["Name", "Email", "Phone Number"],
       data: [
@@ -18,20 +20,26 @@ const App = () => {
       ],
     });
 
-    grid.render(gridRef.current);
-    console.log(grid.config.columns);
-    return () => {
-      grid.destroy();
-    };
-  }, []);
-  return (
-    <div id="wrapper" className="container">
-      <div className="row">
-        <table className="table-responsive border">
-          <div ref={gridRef} className="bordered"></div>
+    const tableRows = columnd.options.data.map((row, index) => (
+      <tr key={index}>
+        {row.map((cell, index) => (
+          <td key={index}>{cell}</td>
+        ))}
+      </tr>
+    ));
+    return (
+      <div className="container mt-4">
+        <table className="table">
+          <thead>
+            <tr>
+              {columnd.options.columns.map((column, index) => (
+                <th key={index}>{column}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>{tableRows}</tbody>
         </table>
       </div>
-    </div>
-  );
-};
-export default App;
+    );
+  }
+}
